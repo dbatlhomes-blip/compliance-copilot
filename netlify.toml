@@ -1,0 +1,13 @@
+# Netlify configuration for the Listing Compliance Co-Pilot
+# The site is a single static page (index.html) plus one serverless
+# function (netlify/functions/review.js) that securely calls the AI.
+
+[build]
+publish = "."
+functions = "netlify/functions"
+
+# A friendly URL is not required - the page calls the function at
+# /.netlify/functions/review directly. No redirects needed.
+
+[functions]
+node_bundler = "esbuild"
