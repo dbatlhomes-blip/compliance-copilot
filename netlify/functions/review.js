@@ -52,7 +52,7 @@ const requiresCode = !!process.env.ACCESS_CODE;
 
 // Lightweight probe so the page knows whether to show the access-code box.
 if (event.httpMethod === "GET") {
-  if (event.queryStringParameters && event.queryStringParameters.debug === "models") { const dk = process.env.ANTHROPIC_API_KEY; if (!dk) return json(500, { error: "no key" }); const dr = await fetch("https://api.anthropic.com/v1/models", { headers: { "x-api-key": dk, "anthropic-version": "2023-06-01" } }); const dt = await dr.text(); return json(dr.status, { status: dr.status, body: dt.slice(0,3000) }); }
+  if (event.queryStringParameters && event.queryStringParameters.debug === "models") { const dk = process.env.ANTHROPIC_API_KEY; if (!dk) return json(500, { error: "no key" }); const dr = await fetch("https://api.anthropic.com/v1/models?limit=100", { headers: { "x-api-key": dk, "anthropic-version": "2023-06-01" } }); const dj = await dr.json(); const ids = (dj.data || []).map((m) => m.id); return json(200, { status: dr.status, ids }); }
 return json(200, { ok: true, requiresCode });
 }
 if (event.httpMethod !== "POST") {
