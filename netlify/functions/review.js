@@ -52,8 +52,7 @@ const requiresCode = !!process.env.ACCESS_CODE;
 
 // Lightweight probe so the page knows whether to show the access-code box.
 if (event.httpMethod === "GET") {
-  if (event.queryStringParameters && event.queryStringParameters.debug === "models") { const dk = process.env.ANTHROPIC_API_KEY; if (!dk) return json(500, { error: "no key" }); const dr = await fetch("https://api.anthropic.com/v1/models?limit=100", { headers: { "x-api-key": dk, "anthropic-version": "2023-06-01" } }); const dj = await dr.json(); const ids = (dj.data || []).map((m) => m.id); return json(200, { status: dr.status, ids }); }
-return json(200, { ok: true, requiresCode });
+  return json(200, { ok: true, requiresCode });
 }
 if (event.httpMethod !== "POST") {
 return json(405, { error: "Method not allowed." });
@@ -77,7 +76,7 @@ if (listing.length > 6000) return json(400, { error: "That listing is too long (
 const apiKey = process.env.ANTHROPIC_API_KEY;
 if (!apiKey) return json(500, { error: "The reviewer isn't configured yet (missing API key)." });
 
-const model = process.env.MODEL || "claude-3-haiku-20240307";
+const model = process.env.MODEL || "claude-haiku-4-5-20251001";
 
 try {
 const resp = await fetch("https://api.anthropic.com/v1/messages", {
