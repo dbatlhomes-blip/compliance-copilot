@@ -76,7 +76,7 @@ if (listing.length > 6000) return json(400, { error: "That listing is too long (
 const apiKey = process.env.ANTHROPIC_API_KEY;
 if (!apiKey) return json(500, { error: "The reviewer isn't configured yet (missing API key)." });
 
-const model = process.env.MODEL || "claude-3-5-haiku-20241022";
+const model = process.env.MODEL || "claude-3-haiku-20240307";
 
 try {
 const resp = await fetch("https://api.anthropic.com/v1/messages", {
