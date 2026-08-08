@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Listing Compliance Co-Pilot · Article 12 Reviewer</title>
+<meta name="description" content="Paste a real estate listing and get an instant NAR Article 12 compliance review with a ready-to-publish rewrite.">
+<style>
+:root{
+--navy:#0f2b46;--navy2:#163a5f;--teal:#12a4a4;--teal-d:#0c7d7d;--gold:#f2a541;
+--red:#e0553b;--red-bg:#fdecec;--amber:#c77d15;--amber-bg:#fbf3e2;
+--green:#1f8a54;--green-bg:#e7f5ee;--ink:#1c2733;--muted:#5a6b78;
+--line:#e2e8ee;--bg:#f4f7fa;--card:#fff;--shadow:0 6px 24px rgba(15,43,70,.08);
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+color:var(--ink);background:var(--bg);line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:920px;margin:0 auto;padding:0 20px}
+header.hero{background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 55%,var(--teal-d) 130%);
+color:#fff;padding:40px 0 44px;position:relative;overflow:hidden}
+header.hero::after{content:"";position:absolute;right:-90px;top:-90px;width:300px;height:300px;
+background:radial-gradient(circle,rgba(242,165,65,.35),transparent 65%);border-radius:50%}
+.eyebrow{display:inline-block;letter-spacing:.14em;text-transform:uppercase;font-size:11.5px;font-weight:700;
+color:var(--gold);background:rgba(255,255,255,.08);padding:6px 14px;border-radius:40px;margin-bottom:14px}
+header.hero h1{font-size:32px;line-height:1.15;margin:0 0 10px;font-weight:800}
+header.hero h1 .hl{color:var(--gold)}
+header.hero p.sub{font-size:16.5px;max-width:620px;margin:0;color:#dfe9f1}
+.byline{margin-top:16px;font-size:13px;color:#bcd0e0}
+.byline strong{color:#fff}
+
+main{padding:34px 0 20px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px;box-shadow:var(--shadow);margin-bottom:22px}
+label.fld{display:block;font-weight:700;color:var(--navy);margin:0 0 8px;font-size:15px}
+textarea{width:100%;min-height:170px;border:1.5px solid var(--line);border-radius:12px;padding:14px 16px;
+font-size:15px;font-family:inherit;resize:vertical;color:var(--ink);line-height:1.55}
+textarea:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(18,164,164,.15)}
+.row{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end;margin-top:16px}
+.code-fld{flex:1;min-width:180px}
+.code-fld input{width:100%;border:1.5px solid var(--line);border-radius:10px;padding:11px 13px;font-size:14.5px;font-family:inherit}
+.code-fld input:focus{outline:none;border-color:var(--teal)}
+.code-fld .hint{font-size:12px;color:var(--muted);margin:5px 2px 0}
+button.go{background:var(--teal);color:#fff;border:none;cursor:pointer;font-weight:800;font-size:16px;
+padding:14px 30px;border-radius:11px;transition:.15s;white-space:nowrap}
+button.go:hover{background:var(--teal-d)}
+button.go:disabled{background:#9fc4c4;cursor:not-allowed}
+.meta{display:flex;justify-content:space-between;margin-top:8px;font-size:12px;color:var(--muted)}
+
+.samples{margin-top:14px;font-size:13px;color:var(--muted)}
+.samples a{color:var(--teal-d);font-weight:600;cursor:pointer;text-decoration:underline}
+
+/* loading */
+.loader{display:none;text-align:center;padding:34px 0}
+.loader.on{display:block}
+.spinner{width:38px;height:38px;border:4px solid #d7e6e6;border-top-color:var(--teal);border-radius:50%;
+margin:0 auto 12px;animation:spin 0.9s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loader p{color:var(--muted);font-size:14px;margin:0}
+
+/* results */
+#results{display:none}
+#results.on{display:block}
+.rhead{font-weight:800;text-transform:uppercase;letter-spacing:.05em;font-size:13px;margin:0 0 12px}
+.rhead.flags{color:var(--navy)}
+.rhead.good{color:var(--green)}
+.score{display:inline-flex;align-items:center;gap:9px;background:#f7fafc;border:1px solid var(--line);
+border-radius:30px;padding:7px 16px;font-size:14px;font-weight:700;color:var(--navy);margin-bottom:6px}
+.score .dot{width:11px;height:11px;border-radius:50%}
+.dot.high{background:var(--red)}.dot.med{background:var(--amber)}.dot.low{background:var(--green)}
+
+.flag{border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-bottom:12px}
+.flag .fhead{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:11px 15px;background:#f7fafc;border-bottom:1px solid var(--line)}
+.flag .quote{font-weight:700;color:var(--navy);font-size:14.5px}
+.flag .sop{margin-left:auto;font-size:11.5px;font-weight:800;color:#fff;background:var(--navy);padding:4px 10px;border-radius:20px;white-space:nowrap}
+.flag .sop.fh{background:#7a3ea6}
+.flag .fbody{padding:13px 15px;display:grid;grid-template-columns:1fr 1fr;gap:13px}
+@media(max-width:600px){.flag .fbody{grid-template-columns:1fr}}
+.flag .lbl{font-size:10.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin:0 0 3px}
+.flag .issue{font-size:14px;color:#4a2a24}
+.flag .fix{font-size:14px;color:#1c4a34}
+.risk{display:inline-block;font-size:10.5px;font-weight:800;text-transform:uppercase;padding:2px 8px;border-radius:5px;margin-left:6px}
+.risk.high{background:var(--red-bg);color:var(--red)}
+.risk.med{background:var(--amber-bg);color:var(--amber)}
+.risk.low{background:var(--green-bg);color:var(--green)}
+
+.listing-good{background:var(--green-bg);border:1px solid #bfe3cf;border-left:5px solid var(--green);
+border-radius:10px;padding:18px 20px;font-size:15px;color:#194b33;position:relative}
+.copyr{position:absolute;top:12px;right:12px;background:var(--green);color:#fff;border:none;cursor:pointer;
+font-weight:700;font-size:12.5px;padding:6px 13px;border-radius:8px}
+.copyr.done{background:var(--teal-d)}
+.verify{background:var(--amber-bg);border:1px solid #eed6a8;border-left:5px solid var(--gold);border-radius:10px;
+padding:13px 17px;font-size:14px;color:#5e4611;margin-top:14px}
+.verify b{color:var(--navy)}
+
+.err{display:none;background:var(--red-bg);border:1px solid #f3c4bc;border-left:5px solid var(--red);
+border-radius:10px;padding:14px 17px;color:#5c2018;font-size:14.5px;margin-top:16px}
+.err.on{display:block}
+
+.disclaimer{font-size:12px;color:var(--muted);text-align:center;max-width:660px;margin:6px auto 0;line-height:1.5}
+footer{background:var(--navy);color:#c6d6e4;padding:26px 0;font-size:13px;margin-top:20px}
+footer strong{color:#fff}
+</style>
+</head>
+<body>
+
+<header class="hero">
+<div class="wrap">
+<span class="eyebrow">Powered by AI · Built for REALTORS®</span>
+<h1>Listing Compliance <span class="hl">Co-Pilot</span></h1>
+<p class="sub">Paste your listing description below. In seconds you'll get every risky claim flagged against NAR Code of Ethics <b>Article 12</b> — plus a clean, ready-to-publish rewrite.</p>
+<div class="byline">An AI tool by <strong>Debra Betolatti</strong> · Abide Academy of Real Estate</div>
+</div>
+</header>
+
+<main>
+<div class="wrap">
+<div class="panel">
+<label class="fld" for="listing">Your listing description</label>
+<textarea id="listing" maxlength="6000" placeholder="Paste the full listing description here — the way it would appear on the MLS or in your marketing…"></textarea>
+<div class="meta"><span id="count">0 / 6000 characters</span><span>Nothing you paste is stored.</span></div>
+
+<div class="samples">Need a test? <a id="loadSample">Load a sample listing →</a></div>
+
+<div class="row">
+<div class="code-fld" id="codeWrap" style="display:none">
+<label class="fld" for="accesscode" style="font-size:13px">Class access code</label>
+<input id="accesscode" type="text" placeholder="Enter the code from your instructor" autocomplete="off">
+<p class="hint">Ask Debra / your instructor for today's code.</p>
+</div>
+<button class="go" id="reviewBtn">🔎 Review my listing</button>
+</div>
+</div>
+
+<div class="loader" id="loader">
+<div class="spinner"></div>
+<p>Reviewing against Article 12…</p>
+</div>
+
+<div class="err" id="err"></div>
+
+<div id="results">
+<div class="panel">
+<div id="scoreWrap"></div>
+<p class="rhead flags">🔎 Compliance flags</p>
+<div id="flags"></div>
+</div>
+<div class="panel">
+<p class="rhead good">✅ Suggested compliant rewrite</p>
+<div class="listing-good">
+<button class="copyr" id="copyRewrite">📋 Copy</button>
+<span id="rewrite"></span>
+</div>
+<div class="verify" id="verifyBox"></div>
+</div>
+</div>
+
+<p class="disclaimer">Educational tool only — not legal advice. AI can miss things and can be wrong; a licensed human must verify every result. Also confirm compliance with your brokerage policy and state license rules (in Georgia, the GREC advertising regulations).</p>
+</div>
+</main>
+
+<footer>
+<div class="wrap">
+<strong>Listing Compliance Co-Pilot</strong> — reviews against NAR Code of Ethics Article 12 (Standards of Practice 12-1 to 12-13).<br>
+An AI Implementation tool by Debra Betolatti · Abide Academy of Real Estate.
+</div>
+</footer>
+
+<script>
+var SAMPLE = "MUST SEE! The BEST home in all of Cobb County — nobody can beat this value. This one-of-a-kind luxury estate is PRICED TO SELL and won't last. Renovated with the finest materials money can buy, it sits on the largest lot in the neighborhood with the lowest HOA fees around. Zoned for the top-rated schools in Georgia. FREE home warranty with purchase! Motivated seller — bring all offers, this is a STEAL. Perfect for families and just 5 minutes from everything. Call now before it's gone!";
+
+var ta=document.getElementById('listing'),
+count=document.getElementById('count'),
+btn=document.getElementById('reviewBtn'),
+loader=document.getElementById('loader'),
+results=document.getElementById('results'),
+errBox=document.getElementById('err');
+
+ta.addEventListener('input',function(){count.textContent=ta.value.length+" / 6000 characters";});
+document.getElementById('loadSample').addEventListener('click',function(){
+ta.value=SAMPLE;ta.dispatchEvent(new Event('input'));ta.focus();
+});
+
+// Show access-code field only if the site was configured to require one.
+// The backend tells us via a lightweight probe on first load.
+fetch('/.netlify/functions/review',{method:'GET'}).then(function(r){return r.json();}).then(function(j){
+if(j && j.requiresCode){document.getElementById('codeWrap').style.display='block';}
+}).catch(function(){});
+
+btn.addEventListener('click',runReview);
+
+function runReview(){
+var text=ta.value.trim();
+errBox.className='err';
+if(text.length<20){showErr("Please paste a listing description first (at least a sentence or two).");return;}
+results.className='';loader.className='loader on';btn.disabled=true;
+
+var payload={listing:text};
+var codeEl=document.getElementById('accesscode');
+if(codeEl){payload.code=codeEl.value.trim();}
+
+fetch('/.netlify/functions/review',{
+method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)
+}).then(function(r){return r.json().then(function(j){return{ok:r.ok,status:r.status,body:j};});})
+.then(function(res){
+loader.className='loader';btn.disabled=false;
+if(!res.ok){showErr(res.body && res.body.error ? res.body.error : "Something went wrong. Please try again.");return;}
+render(res.body);
+}).catch(function(){
+loader.className='loader';btn.disabled=false;
+showErr("Couldn't reach the reviewer. Check your connection and try again.");
+});
+}
+
+function showErr(m){errBox.textContent=m;errBox.className='err on';}
+
+function esc(s){var d=document.createElement('div');d.textContent=s==null?'':String(s);return d.innerHTML;}
+
+function render(data){
+var flags=(data.flags)||[];
+var counts={high:0,med:0,low:0};
+flags.forEach(function(f){var r=(f.risk||'').toLowerCase();if(counts[r]!=null)counts[r]++;});
+
+var sw=document.getElementById('scoreWrap');
+if(flags.length===0){
+sw.innerHTML='<span class="score"><span class="dot low"></span>No Article 12 issues detected — still verify facts before publishing.</span>';
+}else{
+var worst=counts.high>0?'high':(counts.med>0?'med':'low');
+sw.innerHTML='<span class="score"><span class="dot '+worst+'"></span>'+flags.length+' item'+(flags.length>1?'s':'')+' flagged · '
++counts.high+' high · '+counts.med+' medium · '+counts.low+' low</span>';
+}
+
+var html='';
+flags.forEach(function(f){
+var isFH=/fair housing|article 10/i.test(f.rule||'');
+var risk=(f.risk||'med').toLowerCase();if(!/^(high|med|low)$/.test(risk))risk='med';
+html+='<div class="flag"><div class="fhead">'
++'<span class="quote">"'+esc(f.quote)+'"</span>'
++'<span class="sop'+(isFH?' fh':'')+'">'+esc(f.rule||'Article 12')+'</span></div>'
++'<div class="fbody"><div><p class="lbl">Issue<span class="risk '+risk+'">'+risk+'</span></p>'
++'<p class="issue">'+esc(f.problem)+'</p></div>'
++'<div><p class="lbl">Compliant fix</p><p class="fix">'+esc(f.fix)+'</p></div></div></div>';
+});
+if(flags.length===0){html='<p style="color:var(--muted);font-size:14.5px">Nothing flagged. Good work — just double-check every factual claim (lot size, HOA, schools) before it goes live.</p>';}
+document.getElementById('flags').innerHTML=html;
+
+document.getElementById('rewrite').textContent=data.rewrite||'(No rewrite returned.)';
+var vb=document.getElementById('verifyBox');
+if(data.verify){vb.style.display='block';vb.innerHTML='<b>Verify before posting:</b> '+esc(data.verify);}
+else{vb.style.display='none';}
+
+results.className='on';
+results.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+document.getElementById('copyRewrite').addEventListener('click',function(){
+var t=document.getElementById('rewrite').textContent,b=this;
+navigator.clipboard.writeText(t).then(function(){b.textContent='✅ Copied!';b.classList.add('done');
+setTimeout(function(){b.textContent='📋 Copy';b.classList.remove('done');},2000);});
+});
+</script>
+</body>
+</html>
